@@ -7,7 +7,9 @@ __kernel void convolution(__global double * a, __global double * b,
         j = id % N
         for (int k = -HM; k < HM; k++){
             for (int l = -HM; l < HM; l++) {
-                c[i * N + j] += a[(i + k) * N +  j + l] * b[(k + HM) * M + l + HM]
+                if (i + k >= 0 && j + l >= 0 && i + k < N && j + l < N) {
+                    c[i * N + j] += a[(i + k) * N +  j + l] * b[(k + HM) * M + l + HM]
+                }
             }
         }
     }
