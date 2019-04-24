@@ -50,9 +50,9 @@ int main() {
         size_t N, M;
         fin >> N >> M;
 
-        std::vector<int> a(N * N);
-        std::vector<int> b(M * M);
-        std::vector<int> c(N * N);
+        std::vector<double> a(N * N);
+        std::vector<double> b(M * M);
+        std::vector<double> c(N * N);
         for (size_t i = 0; i < N; ++i) {
             for (size_t j = 0; j < N; j++) {
                 fin >> a[i * N + j];
