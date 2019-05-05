@@ -1,5 +1,5 @@
 #define __CL_ENABLE_EXCEPTIONS
-#include <CL/cl.h>
+//#include <CL/cl.h>
 #include "cl.hpp"
 
 #include <vector>
@@ -82,7 +82,11 @@ int main() {
         kernel_gmem.setArg(2, dev_c);
         kernel_gmem.setArg(3, static_cast<int>(N));
         kernel_gmem.setArg(4, static_cast<int>(M));
-        queue.enqueueNDRangeKernel(kernel_gmem, cl::NullRange, cl::NDRange(N * N), cl::NDRange(block_size));
+        size_t global_size = N * N;
+        if (N * N % block_size != 0) {
+            global_size = (N * N + block_size - 1) / block_size * block_size;
+        }
+        queue.enqueueNDRangeKernel(kernel_gmem, cl::NullRange, cl::NDRange(global_size), cl::NDRange(block_size));
 
         queue.enqueueReadBuffer(dev_c, CL_TRUE, 0, sizeof(double) * N * N, &c[0]);
         for (size_t i = 0; i < N; ++i) {
